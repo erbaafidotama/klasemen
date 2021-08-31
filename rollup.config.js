@@ -73,6 +73,7 @@ export default {
       SVELTE_APP_SUPABASE_ANON_KEY: JSON.stringify(
         process.env.SVELTE_APP_SUPABASE_ANON_KEY
       ),
+      preventAssignment: true,
     }),
     json(),
 

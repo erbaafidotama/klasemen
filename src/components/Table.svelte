@@ -3,7 +3,7 @@
   export let data;
 </script>
 
-<Table striped hover responsive bordered  style="text-align: center;">
+<Table striped hover responsive  style="text-align: center;">
   <!-- {@debug data} -->
   <thead>
     <tr>
