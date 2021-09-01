@@ -8,6 +8,7 @@
     NavItem,
     NavLink,
   } from "sveltestrap";
+  import icon from "../images/icon-pblenong.png";
 
   let isOpen = false;
 
@@ -17,7 +18,7 @@
 </script>
 
 <Navbar color="light" light expand="md">
-  <NavbarBrand href="/">Klasemen PB. Lenong</NavbarBrand>
+  <NavbarBrand href="/"><img src={icon} alt="background image" style="width: 2em; height: 2em" /> Klasemen PB. Lenong</NavbarBrand>
   <NavbarToggler on:click={() => (isOpen = !isOpen)} />
   <Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
     <Nav class="ms-auto" navbar>

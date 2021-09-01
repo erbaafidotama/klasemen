@@ -7,6 +7,7 @@ import css from "rollup-plugin-css-only";
 import dotenv from 'dotenv';
 import replace from "@rollup/plugin-replace";
 import json from "@rollup/plugin-json";
+import image from '@rollup/plugin-image';
 
 dotenv.config();
 
@@ -46,6 +47,7 @@ export default {
     file: "public/build/bundle.js",
   },
   plugins: [
+    image(), 
     svelte({
       compilerOptions: {
         // enable run-time checks when not in production
