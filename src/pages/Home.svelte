@@ -12,7 +12,7 @@
     Input,
     ModalFooter,
   } from "sveltestrap";
-  import ComTable from "../components/Table.svelte";
+  import Table from "../components/tables/TableKlasemen.svelte";
   import { supabase } from "../supabaseClient";
 
   onMount(() => {
@@ -67,7 +67,7 @@
       {#await dataListKlasemen}
         <p>loading...</p>
       {:then payloadTable}
-        <ComTable data={payloadTable} attribute={attribTable} />
+        <Table data={payloadTable} attribute={attribTable} />
       {:catch error}
         <p style="color: red">{error.message}</p>
       {/await}

@@ -11,7 +11,7 @@
     ModalFooter,
     Alert,
   } from "sveltestrap";
-  import TableAdv from "../components/TableAdv.svelte";
+  import Table from "../components/tables/TableResult.svelte";
   import { supabase } from "../supabaseClient";
   import { v4 as uuidv4 } from "uuid";
   import { onMount } from "svelte";
@@ -428,7 +428,7 @@
       {#await dataListResultMatch}
         <p>loading...</p>
       {:then payloadTable}
-        <TableAdv data={payloadTable} />
+        <Table data={payloadTable} />
       {:catch error}
         <p style="color: red">{error.message}</p>
       {/await}

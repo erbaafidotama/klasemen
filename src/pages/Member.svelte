@@ -16,7 +16,7 @@
   import { createForm } from "svelte-forms-lib";
   import { v4 as uuidv4 } from "uuid";
   import * as yup from "yup";
-  import ComTable from "../components/DynamicTable.svelte";
+  import Table from "../components/tables/TableMember.svelte";
   import { supabase } from "../supabaseClient";
   import { onMount } from "svelte";
 
@@ -25,13 +25,20 @@
       nama: "",
       alamat: "",
       tanggal_lahir: "",
-      tanggal_bergabung: "",
+      tgl_bergabung: "",
       description: "",
     },
     onSubmit: (values) => {
       submitDataMember(values);
     },
   });
+  let clearValues = {
+    nama: "",
+    alamat: "",
+    tanggal_lahir: "",
+    tgl_bergabung: "",
+    description: "",
+  };
   $: dataListMember = [];
 
   onMount(() => {
@@ -48,23 +55,43 @@
   }
 
   async function submitDataMember(values) {
-    const { data, error } = await supabase.from("tbl_member").insert({
-      member_uuid: uuidv4(),
-      nama: values.nama,
-      alamat: values.alamat,
-      tanggal_lahir: values.tanggal_lahir,
-      tgl_bergabung: values.tanggal_bergabung,
-      description: values.description,
-    });
-
-    if (data) {
-      visibleAlertSuccess = true;
-      listMember();
-      openModalAddMember();
+    if (values.member_uuid) {
+      const { data, error } = await supabase
+        .from("tbl_member")
+        .update({
+          nama: values.nama,
+          alamat: values.alamat,
+          tanggal_lahir: values.tanggal_lahir,
+          tgl_bergabung: values.tgl_bergabung,
+          description: values.description,
+        })
+        .eq("member_uuid", values.member_uuid);
+      if (data) {
+        visibleAlertSuccess = true;
+        listMember();
+        openModalAddMember();
+        $form = clearValues;
+      }
+    } else {
+      const { data, error } = await supabase.from("tbl_member").insert({
+        member_uuid: uuidv4(),
+        nama: values.nama,
+        alamat: values.alamat,
+        tanggal_lahir: values.tanggal_lahir,
+        tgl_bergabung: values.tgl_bergabung,
+        description: values.description,
+      });
+      if (data) {
+        visibleAlertSuccess = true;
+        listMember();
+        openModalAddMember();
+        $form = clearValues;
+      }
     }
+    console.log(values);
   }
 
-  const attribTable = [
+  const headerTable = [
     {
       header: "Nama",
       field: "nama",
@@ -87,10 +114,61 @@
     },
   ];
 
+  const buttonList = [
+    {
+      name: "Edit",
+      color: "warning",
+      size: "sm",
+      onClick: (data) => openModalEditMember(data),
+    },
+    {
+      name: "Delete",
+      color: "danger",
+      size: "sm",
+      onClick: (data) => openModalDeleteMember(data),
+    },
+  ];
+
   let isOpenModalMember = false;
+  let isOpenModalDeleteMember = false;
 
   function openModalAddMember() {
     isOpenModalMember = !isOpenModalMember;
+  }
+
+  async function openModalDeleteMember(data) {
+    isOpenModalDeleteMember = !isOpenModalDeleteMember;
+    $form = await getOneMember(data);
+  }
+
+  async function openModalEditMember(data) {
+    isOpenModalMember = !isOpenModalMember;
+    $form = await getOneMember(data);
+    console.log($form);
+  }
+
+  async function getOneMember(param) {
+    console.log(param);
+    let { data, error } = await supabase
+      .from("tbl_member")
+      .select("*")
+      .eq("member_uuid", param.member_uuid);
+    console.log(data);
+    return data[0];
+  }
+
+  async function doDeleteMember() {
+    let { data, error } = await supabase
+      .from("tbl_member")
+      .delete()
+      .eq("member_uuid", $form.member_uuid);
+
+    console.log("DELETE", data);
+    if (data) {
+      listMember();
+      $form = clearValues;
+      isOpenModalDeleteMember = !isOpenModalDeleteMember;
+    }
   }
 </script>
 
@@ -112,7 +190,7 @@
       {#await dataListMember}
         <p>loading...</p>
       {:then payload}
-        <ComTable data={payload} attribute={attribTable} />
+        <Table datas={payload} headers={headerTable} {buttonList} />
       {:catch error}
         <p style="color: red">{error.message}</p>
       {/await}
@@ -165,14 +243,14 @@
           {/if} -->
           <br />
 
-          <Label for="tanggal_bergabung">Tanggal Bergabung</Label>
+          <Label for="tgl_bergabung">Tanggal Bergabung</Label>
           <Input
             type="date"
-            name="tanggal_bergabung"
-            id="tanggal_bergabung"
+            name="tgl_bergabung"
+            id="tgl_bergabung"
             placeholder="Tanggal Bergabung"
             on:change={handleChange}
-            bind:value={$form.tanggal_bergabung}
+            bind:value={$form.tgl_bergabung}
           />
           <br />
 
@@ -189,10 +267,21 @@
         </FormGroup>
       </ModalBody>
       <ModalFooter>
-        <Button color="primary" type="submit">Do Something</Button>
+        <Button color="primary" type="submit">Save</Button>
         <!-- <Button color="secondary" on:click={openModalAddMember}>Cancel</Button> -->
       </ModalFooter>
     </form>
+  </Modal>
+
+  <Modal isOpen={isOpenModalDeleteMember} toggle={openModalDeleteMember}>
+    <ModalHeader toggle={openModalDeleteMember}>Delete Member</ModalHeader>
+    <ModalBody>
+      Yakin ingin delete data member <b>{$form.nama}</b>?
+    </ModalBody>
+    <ModalFooter>
+      <Button color="primary" on:click={doDeleteMember}>Save</Button>
+      <Button color="secondary" on:click={openModalDeleteMember}>Cancel</Button>
+    </ModalFooter>
   </Modal>
 </Container>
 
