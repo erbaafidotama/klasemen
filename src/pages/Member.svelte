@@ -48,7 +48,7 @@
   let visibleAlertSuccess = false;
 
   async function listMember() {
-    let { data, error } = await supabase.from("tbl_member").select("*");
+    let { data, error } = await supabase.from("tbl_member").select("*").order('nama', { ascending: true });
     if (data) {
       dataListMember = data;
     }
@@ -169,6 +169,12 @@
       $form = clearValues;
       isOpenModalDeleteMember = !isOpenModalDeleteMember;
     }
+  }
+
+  if (visibleAlertSuccess === true) {
+    setTimeout(() => {
+      visibleAlertSuccess = false;
+    }, 2000);
   }
 </script>
 

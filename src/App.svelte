@@ -12,6 +12,7 @@
 </svelte:head>
 
 <Navbar />
+<br />
 <Router {routes} />
 
 <style>

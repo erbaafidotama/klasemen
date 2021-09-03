@@ -15,6 +15,7 @@
   import { supabase } from "../supabaseClient";
   import { v4 as uuidv4 } from "uuid";
   import { onMount } from "svelte";
+  import { postResultMatch } from "../api/api";
 
   $: dataListResultMatch = [];
   onMount(() => {
@@ -78,22 +79,7 @@
       resultWinMatch = "draw";
     }
 
-    const { data: dataResult, errorResult } = await supabase
-      .from("tbl_result_match")
-      .insert({
-        result_match_uuid: uuidv4(),
-        team_a_player_1_id: formValues.team_a_player_1.id,
-        team_a_player_2_id: formValues.team_a_player_2.id,
-        team_b_player_1_id: formValues.team_b_player_1.id,
-        team_b_player_2_id: formValues.team_b_player_2.id,
-        team_a_set_1: formValues.set_1.team_a_set_1,
-        team_a_set_2: formValues.set_2.team_a_set_2,
-        team_a_set_3: formValues.set_3.team_a_set_3,
-        team_b_set_1: formValues.set_1.team_b_set_1,
-        team_b_set_2: formValues.set_2.team_b_set_2,
-        team_b_set_3: formValues.set_3.team_b_set_3,
-        tanggal_match: today,
-      });
+    const dataPostResultMatch = postResultMatch(formValues);
 
     for (const key of Object.keys(formValues)) {
       if (key.includes("player")) {
@@ -205,7 +191,7 @@
       }
     }
 
-    if (dataResult) {
+    if (dataPostResultMatch) {
       visibleAlertSuccess = true;
       getListResultMatch();
       openModalAddResultMatch();
@@ -265,6 +251,12 @@
 
   function openModalAddResultMatch() {
     isOpenModalResultMatch = !isOpenModalResultMatch;
+  }
+
+  if (visibleAlertSuccess === true) {
+    setTimeout(() => {
+      visibleAlertSuccess = false;
+    }, 2000);
   }
 </script>
 
