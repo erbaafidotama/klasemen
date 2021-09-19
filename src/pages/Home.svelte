@@ -25,7 +25,8 @@
     let { data, error } = await supabase
       .from("tbl_klasemen")
       .select(`*, member:member_id(nama, id, member_uuid)`)
-      .order("point", { ascending: false });
+      .order("point", { ascending: false })
+      .order("diff_score", { ascending: false });
     dataListKlasemen = data;
   }
 
@@ -47,12 +48,28 @@
       field: "play",
     },
     {
+      header: "W",
+      field: "win",
+    },
+    {
+      header: "D",
+      field: "draw",
+    },
+    {
+      header: "L",
+      field: "lose",
+    },
+    {
       header: "Total Score",
       field: "total_score",
     },
     {
       header: "Total Co Score",
       field: "total_co_score",
+    },
+    {
+      header: "Diff. Score",
+      field: "diff_score",
     },
     {
       header: "Point",

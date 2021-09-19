@@ -45,10 +45,13 @@
     listMember();
   });
 
-  let visibleAlertSuccess = false;
+  $: visibleAlertSuccess = false;
 
   async function listMember() {
-    let { data, error } = await supabase.from("tbl_member").select("*").order('nama', { ascending: true });
+    let { data, error } = await supabase
+      .from("tbl_member")
+      .select("*")
+      .order("nama", { ascending: true });
     if (data) {
       dataListMember = data;
     }
@@ -171,9 +174,14 @@
     }
   }
 
+  function openAlertSuccess() {
+    visibleAlertSuccess = !visibleAlertSuccess;
+  }
+  console.log(visibleAlertSuccess);
   if (visibleAlertSuccess === true) {
+    console.log("MASOK SUKSES");
     setTimeout(() => {
-      visibleAlertSuccess = false;
+      openAlertSuccess();
     }, 2000);
   }
 </script>

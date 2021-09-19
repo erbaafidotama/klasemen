@@ -79,7 +79,7 @@
       resultWinMatch = "draw";
     }
 
-    const dataPostResultMatch = postResultMatch(formValues);
+    // const dataPostResultMatch = postResultMatch(formValues);
 
     for (const key of Object.keys(formValues)) {
       if (key.includes("player")) {
@@ -90,6 +90,11 @@
           let totalScoreTeamSet;
           let totalCoScoreTeamSet;
           let point;
+          let win;
+          let draw;
+          let lose;
+          console.log("formvalues", formValues);
+          console.log("dataKlasemenMember", dataKlasemenMember);
           if (key.includes("team_a")) {
             totalScoreTeamSet =
               formValues.set_1.team_a_set_1 +
@@ -107,6 +112,25 @@
                 : resultWinMatch === "team_b"
                 ? 0
                 : 1;
+
+            win =
+              resultWinMatch === "team_a"
+                ? 1
+                : resultWinMatch === "team_b"
+                ? 0
+                : 0;
+            draw =
+              resultWinMatch === "team_a"
+                ? 0
+                : resultWinMatch === "team_b"
+                ? 0
+                : 1;
+            lose =
+              resultWinMatch === "team_a"
+                ? 0
+                : resultWinMatch === "team_b"
+                ? 1
+                : 0;
           } else {
             totalScoreTeamSet =
               formValues.set_1.team_b_set_1 +
@@ -124,6 +148,25 @@
                 : resultWinMatch === "team_a"
                 ? 0
                 : 1;
+
+            win =
+              resultWinMatch === "team_a"
+                ? 0
+                : resultWinMatch === "team_b"
+                ? 1
+                : 0;
+            draw =
+              resultWinMatch === "team_a"
+                ? 0
+                : resultWinMatch === "team_b"
+                ? 0
+                : 1;
+            lose =
+              resultWinMatch === "team_a"
+                ? 1
+                : resultWinMatch === "team_b"
+                ? 0
+                : 0;
           }
 
           const { data, error } = await supabase
@@ -137,6 +180,9 @@
                 parseInt(dataKlasemenMember[0].total_co_score),
               point: point + dataKlasemenMember[0].point,
               play: parseInt(dataKlasemenMember[0].play) + 1,
+              win: parseInt(dataKlasemenMember[0].win) + win,
+              draw: parseInt(dataKlasemenMember[0].draw) + draw,
+              lose: parseInt(dataKlasemenMember[0].lose) + lose,
             })
             .eq("member_id", dataKlasemenMember[0].member_id);
         } else {
@@ -144,6 +190,9 @@
           let totalScoreTeamSet;
           let totalCoScoreTeamSet;
           let point;
+          let win;
+          let draw;
+          let lose;
           if (key.includes("team_a")) {
             totalScoreTeamSet =
               formValues.set_1.team_a_set_1 +
@@ -161,6 +210,25 @@
                 : resultWinMatch === "team_b"
                 ? 0
                 : 1;
+
+            win =
+              resultWinMatch === "team_a"
+                ? 1
+                : resultWinMatch === "team_b"
+                ? 0
+                : 0;
+            draw =
+              resultWinMatch === "team_a"
+                ? 0
+                : resultWinMatch === "team_b"
+                ? 0
+                : 1;
+            lose =
+              resultWinMatch === "team_a"
+                ? 0
+                : resultWinMatch === "team_b"
+                ? 1
+                : 0;
           } else {
             totalScoreTeamSet =
               formValues.set_1.team_b_set_1 +
@@ -178,6 +246,25 @@
                 : resultWinMatch === "team_a"
                 ? 0
                 : 1;
+
+            win =
+              resultWinMatch === "team_a"
+                ? 0
+                : resultWinMatch === "team_b"
+                ? 1
+                : 0;
+            draw =
+              resultWinMatch === "team_a"
+                ? 0
+                : resultWinMatch === "team_b"
+                ? 0
+                : 1;
+            lose =
+              resultWinMatch === "team_a"
+                ? 1
+                : resultWinMatch === "team_b"
+                ? 0
+                : 0;
           }
           const { data, error } = await supabase.from("tbl_klasemen").insert({
             klasemen_uuid: uuidv4(),
@@ -186,6 +273,9 @@
             total_co_score: parseInt(totalCoScoreTeamSet),
             point: point,
             play: 1,
+            win: win,
+            draw: draw,
+            lose: lose,
           });
         }
       }
