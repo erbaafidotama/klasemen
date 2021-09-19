@@ -14,21 +14,22 @@
   } from "sveltestrap";
   import Table from "../components/tables/TableKlasemen.svelte";
   import { supabase } from "../supabaseClient";
-
-  onMount(() => {
-    getListKlasemen();
-  });
+  import { getListKlasemen } from "../api/api";
 
   $: dataListKlasemen = [];
 
-  async function getListKlasemen() {
-    let { data, error } = await supabase
-      .from("tbl_klasemen")
-      .select(`*, member:member_id(nama, id, member_uuid)`)
-      .order("point", { ascending: false })
-      .order("diff_score", { ascending: false });
-    dataListKlasemen = data;
-  }
+  onMount(() => {
+    dataListKlasemen = getListKlasemen();
+  });
+
+  // async function getListKlasemen() {
+  //   let { data, error } = await supabase
+  //     .from("tbl_klasemen")
+  //     .select(`*, member:member_id(nama, id, member_uuid)`)
+  //     .order("point", { ascending: false })
+  //     .order("diff_score", { ascending: false });
+  //   dataListKlasemen = data;
+  // }
 
   async function listMember() {
     let { data, error } = await supabase.from("tbl_member").select("*");
@@ -39,6 +40,10 @@
   const dataListMember = listMember();
 
   const attribTable = [
+    {
+      header: "",
+      field: "rank_klasemen",
+    },
     {
       header: "Name",
       field: "name",

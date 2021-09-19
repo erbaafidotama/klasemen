@@ -8,7 +8,6 @@ const yyyy = today.getFullYear();
 today = yyyy + "-" + mm + "-" + dd;
 
 async function postResultMatch(params) {
-  console.log("postResultMatch", params);
   const { data: dataResult, errorResult } = await supabase
     .from("tbl_result_match")
     .insert({
@@ -29,8 +28,22 @@ async function postResultMatch(params) {
   if (dataResult) {
     return dataResult;
   } else {
-    console.log("THIS IS ERROR =>", errorResult);
   }
 }
 
-export { postResultMatch };
+async function getListKlasemen() {
+  let { data, error } = await supabase
+    .from("tbl_klasemen")
+    .select(`*, member:member_id(nama, id, member_uuid)`)
+    .order("point", { ascending: false })
+    .order("diff_score", { ascending: false });
+  // dataListKlasemen = data;
+
+  for (let i = 0; i < data.length; i++) {
+    data[i] = { ...data[i], rank_klasemen: i + 1 };
+  }
+
+  return data;
+}
+
+export { postResultMatch, getListKlasemen };

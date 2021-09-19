@@ -93,8 +93,7 @@
           let win;
           let draw;
           let lose;
-          console.log("formvalues", formValues);
-          console.log("dataKlasemenMember", dataKlasemenMember);
+
           if (key.includes("team_a")) {
             totalScoreTeamSet =
               formValues.set_1.team_a_set_1 +
