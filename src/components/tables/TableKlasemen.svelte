@@ -40,3 +40,12 @@
     {/each}
   </tbody>
 </Table>
+
+<style>
+  th:nth-child(-n+2),
+  td:nth-child(-n+2) {
+    position: sticky;
+    left: 0px;
+    background-color: rgb(219, 219, 219);
+  }
+</style>
