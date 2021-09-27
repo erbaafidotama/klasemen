@@ -79,7 +79,7 @@
       resultWinMatch = "draw";
     }
 
-    // const dataPostResultMatch = postResultMatch(formValues);
+    const dataPostResultMatch = postResultMatch(formValues);
 
     for (const key of Object.keys(formValues)) {
       if (key.includes("player")) {
@@ -104,6 +104,8 @@
               formValues.set_1.team_b_set_1 +
               formValues.set_2.team_b_set_2 +
               formValues.set_3.team_b_set_3;
+
+            // totalDiffScore = totalScoreTeamSet - totalCoScoreTeamSet;
 
             point =
               resultWinMatch === "team_a"
@@ -140,6 +142,8 @@
               formValues.set_1.team_a_set_1 +
               formValues.set_2.team_a_set_2 +
               formValues.set_3.team_a_set_3;
+
+            // totalDiffScore = totalScoreTeamSet - totalCoScoreTeamSet;
 
             point =
               resultWinMatch === "team_b"
@@ -177,6 +181,8 @@
               total_co_score:
                 parseInt(totalCoScoreTeamSet) +
                 parseInt(dataKlasemenMember[0].total_co_score),
+              // diff_score:
+              //   totalDiffScore + parseInt(dataKlasemenMember[0].diff_score),
               point: point + dataKlasemenMember[0].point,
               play: parseInt(dataKlasemenMember[0].play) + 1,
               win: parseInt(dataKlasemenMember[0].win) + win,
@@ -202,6 +208,8 @@
               formValues.set_1.team_b_set_1 +
               formValues.set_2.team_b_set_2 +
               formValues.set_3.team_b_set_3;
+
+            // totalDiffScore = totalScoreTeamSet - totalCoScoreTeamSet;
 
             point =
               resultWinMatch === "team_a"
@@ -239,6 +247,8 @@
               formValues.set_2.team_a_set_2 +
               formValues.set_3.team_a_set_3;
 
+            // totalDiffScore = totalScoreTeamSet - totalCoScoreTeamSet;
+
             point =
               resultWinMatch === "team_b"
                 ? 3
@@ -270,6 +280,7 @@
             member_id: formValues[key].id,
             total_score: parseInt(totalScoreTeamSet),
             total_co_score: parseInt(totalCoScoreTeamSet),
+            // diff_score: parseInt(dataKlasemenMember[0].diff_score),
             point: point,
             play: 1,
             win: win,
