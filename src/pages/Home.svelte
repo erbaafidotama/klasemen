@@ -5,12 +5,6 @@
     Col,
     Container,
     Row,
-    Button,
-    Modal,
-    FormGroup,
-    Label,
-    Input,
-    ModalFooter,
   } from "sveltestrap";
   import Table from "../components/tables/TableKlasemen.svelte";
   import { supabase } from "../supabaseClient";

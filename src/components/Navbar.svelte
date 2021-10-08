@@ -19,8 +19,8 @@
 
 <Navbar color="light" light expand="md">
   <NavbarBrand href="/"><img src={icon} alt="background image" style="width: 2em; height: 2em" /> Klasemen PB. Lenong</NavbarBrand>
-  <NavbarToggler on:click={() => (isOpen = !isOpen)} />
-  <Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
+  <!-- <NavbarToggler on:click={() => (isOpen = !isOpen)} /> -->
+  <!-- <Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
     <Nav class="ms-auto" navbar>
       <NavItem>
         <NavLink href="/" on:click={handleUpdate}>Home</NavLink>
@@ -32,5 +32,5 @@
         <NavLink href="/result" on:click={handleUpdate}>Result Match</NavLink>
       </NavItem>
     </Nav>
-  </Collapse>
+  </Collapse> -->
 </Navbar>
